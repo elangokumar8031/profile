@@ -1,0 +1,91 @@
+/* ============================================
+   HeroSection.css
+   ============================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@900&family=Outfit:wght@400;700;900&display=swap');
+
+.hero-section {
+  position: relative;
+  flex: 1;
+  display: grid;
+  grid-template-columns: 80px 1fr 80px;
+  min-height: calc(100vh - 84px);
+  overflow-x: hidden;
+}
+
+.hero-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0 40px;
+  justify-content: center;
+}
+
+.hero-name-container {
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.hero-name-display {
+  font-family: 'Outfit', sans-serif;
+  font-size: clamp(40px, 10vw, 80px);
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+  line-height: 1.1;
+  text-transform: uppercase;
+  
+  /* Glare gradient setup */
+  background: linear-gradient(
+    110deg, 
+    var(--text-primary) 40%, 
+    #888 50%, 
+    var(--text-primary) 60%
+  );
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  
+  /* Initial position (off-screen right) */
+  background-position: 200% center;
+  
+  /* Animation: 6.5s total cycle (5s wait + 1.5s sweep), infinite */
+  animation: text-glare 6.5s ease-in-out infinite;
+  
+  margin: 0;
+  padding: 10px 0;
+}
+
+.hero-name-display span {
+  display: inline-block;
+  -webkit-text-fill-color: var(--text-primary); /* Fallback to solid color for the rolling initial */
+  background: none;
+  -webkit-background-clip: unset;
+  background-clip: unset;
+  margin-right: 0.04em; /* Restore spacing lost by inline-block */
+}
+
+@keyframes text-glare {
+  0%, 77% {
+    background-position: 200% center;
+  }
+  100% {
+    background-position: -200% center;
+  }
+}
+
+@media (max-width: 768px) {
+  .hero-section {
+    grid-template-columns: 50px 1fr 50px;
+  }
+
+  .hero-center {
+    padding: 0 10px;
+    touch-action: pan-y; /* Allow vertical scroll from center column on mobile */
+  }
+
+  .hero-name-display {
+    font-size: clamp(32px, 12vw, 60px);
+  }
+}

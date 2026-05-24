@@ -1,0 +1,187 @@
+import { useState, useEffect } from 'react'
+import { createPortal } from 'react-dom'
+import { motion, AnimatePresence } from 'framer-motion'
+import SidebarLeft  from './SidebarLeft'
+import HeroImage    from './HeroImage'
+import HeroText     from './HeroText'
+import { Particles } from './Particles'
+import './HeroSection.css'
+
+/**
+ * HeroSection — 3-column grid: sidebars + center content
+ * Props:
+ *   photoSrc    {string}  — Pass your photo path here, e.g. "/me.png"
+ *   title       {string}  — Job title headline
+ *   description {string}  — Bio paragraph
+ *   bubble      {string}  — Speech bubble text
+ *   socials     {array}   — Override social links (passed to SidebarLeft)
+ *   onCta       {fn}      — "Get in touch" click handler
+ */
+function HeroSection({ name, title, description, socials, onCta }) {
+  // Ensure animation plays only once per session
+  const [showIntro, setShowIntro] = useState(() => {
+    return !sessionStorage.getItem('introPlayed')
+  })
+  const initialLetter = name ? name.charAt(0) : 'E'
+
+  // Dynamic start delay: wait for the intro screen animation to finish (2.2s + 0.2s buffer)
+  // or start almost immediately if skipped
+  const startDelay = showIntro ? 2.4 : 0.2
+
+  const [isDark, setIsDark] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    setIsMobile(window.innerWidth <= 768);
+  }, []);
+
+  useEffect(() => {
+    const checkDark = () => {
+      setIsDark(document.documentElement.classList.contains('dark'));
+    };
+    checkDark();
+
+    const observer = new MutationObserver(checkDark);
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ['class'],
+    });
+
+    return () => observer.disconnect();
+  }, []);
+
+  const handleIntroComplete = () => {
+    setShowIntro(false);
+    sessionStorage.setItem('introPlayed', 'true');
+  };
+
+  return (
+    <section className="hero-section" id="hero">
+      {isDark && (
+        <Particles
+          className="absolute inset-0 z-0 pointer-events-none"
+          quantity={100}
+          ease={80}
+          color="#ffffff"
+          refresh
+        />
+      )}
+      <AnimatePresence>
+        {showIntro && (
+          <motion.div
+            className="intro-overlay"
+            style={{
+              position: 'fixed',
+              inset: 0,
+              zIndex: 9999,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              backgroundColor: '#0a0a0c', // Obsidian theme background
+              pointerEvents: isMobile ? 'none' : 'auto' // Block all user clicks while animation is running on desktop, but allow interaction on mobile to prevent the scrolling bug
+            }}
+            initial={{ y: '0%' }}
+            animate={{ y: '-100%' }}
+            transition={{ 
+              duration: 0.9, 
+              ease: [0.85, 0, 0.15, 1], // Premium cubic-bezier curtain reveal
+              delay: 1.3 
+            }}
+            onAnimationComplete={handleIntroComplete}
+          >
+            <motion.div
+              initial={{ opacity: 0, scale: 0.8, y: 30, filter: 'blur(8px)' }}
+              animate={{ 
+                opacity: [0, 1, 1, 0],
+                scale: [0.8, 1, 1, 1.15],
+                y: [30, 0, 0, -35],
+                filter: ['blur(8px)', 'blur(0px)', 'blur(0px)', 'blur(12px)']
+              }}
+              transition={{
+                times: [0, 0.25, 0.75, 1],
+                duration: 1.6, // Fades in, dwells, and exits gracefully
+                ease: 'easeInOut',
+                delay: 0.1
+              }}
+              style={{
+                fontFamily: '"Playfair Display", serif',
+                fontSize: 'clamp(140px, 25vw, 320px)',
+                fontWeight: 900,
+                color: 'var(--white)',
+                lineHeight: 1,
+                textShadow: '0 10px 40px rgba(0,0,0,0.1)'
+              }}
+            >
+              Hii
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      <SidebarLeft socials={socials} />
+
+      <main className="hero-center">
+        <div className="hero-name-container">
+          <motion.h1 
+            className="hero-name-display" 
+            style={{ position: 'relative' }}
+            animate={{ x: 1.5 }}
+            transition={{ 
+              delay: startDelay + 0.8, 
+              duration: 0.8, 
+              ease: "easeOut" 
+            }}
+          >
+            {/* Animate each letter of the first name to center themselves */}
+            {name.split(' ').slice(0, -1).join(' ').split('').map((char, i, arr) => (
+              <motion.span
+                key={i}
+                layout // Enable automatic layout animation
+                style={{ display: 'inline-block', whiteSpace: 'pre' }}
+                transition={{ 
+                  layout: {
+                    delay: startDelay + (arr.length - i) * 0.08, // Sync with 'K' roll start
+                    duration: 0.8,
+                    ease: "easeOut"
+                  }
+                }}
+              >
+                {char}
+              </motion.span>
+            ))}
+
+            {/* The rolling initial */}
+            <motion.span
+              style={{ 
+                display: 'inline-block',
+                marginLeft: '0.3em',
+                whiteSpace: 'nowrap',
+                overflow: 'visible'
+              }}
+              initial={{ x: 0, rotate: 0, opacity: 1, width: 'auto' }}
+              animate={{ 
+                x: '100vw', 
+                rotate: 1440,
+                opacity: 0,
+                width: 0,
+                marginLeft: 0
+              }}
+              transition={{ 
+                delay: startDelay,
+                duration: 3, 
+                ease: [0.32, 0, 0.67, 0] 
+              }}
+            >
+              {name.split(' ').slice(-1)}
+            </motion.span>
+          </motion.h1>
+        </div>
+        <HeroText title={title} description={description} onCta={onCta} />
+      </main>
+      
+      {/* SidebarRight removed to become a global component */}
+    </section>
+  )
+}
+
+export default HeroSection

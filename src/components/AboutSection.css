@@ -1,0 +1,211 @@
+/* ============================================
+   AboutSection.css
+   ============================================ */
+
+/* Load classy display fonts from Google */
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,600&display=swap');
+
+/* ── Section wrapper ── */
+.about-section {
+  position: relative;
+  border-top: 1px solid var(--border);
+  padding: 100px 96px 40px;
+  overflow: hidden;
+}
+
+/* Watermark background text */
+.about-bg-text {
+  position: absolute;
+  top: 40px;
+  left: 50%;
+  /* transform is managed by framer-motion */
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(80px, 18vw, 220px);
+  font-weight: 900;
+  color: rgba(0, 0, 0, 0.08);
+  letter-spacing: 0.2em;
+  white-space: nowrap;
+  pointer-events: none;
+  user-select: none;
+  z-index: 2;
+}
+
+.dark .about-bg-text {
+  color: rgba(255, 255, 255, 0.05);
+}
+
+/* ── Section label pill ── */
+.about-label {
+  display: inline-block;
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  border: 1px solid var(--border);
+  border-radius: 100px;
+  padding: 6px 18px;
+  margin: 0 0 28px;
+  position: relative;
+  z-index: 1;
+}
+
+/* ── Two-column inner layout ── */
+.about-inner {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: center;
+  position: relative;
+  z-index: 1;
+}
+
+/* ── Photo column ── */
+.about-photo-col {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.about-photo-frame {
+  position: relative;
+  width: clamp(160px, 22vw, 280px); /* Decreased from clamp(200px, 28vw, 340px) */
+  aspect-ratio: 3 / 4;
+  border-radius: 260px 260px 24px 24px;
+  overflow: hidden;
+  background: #111;
+  box-shadow:
+    0 30px 80px rgba(0, 0, 0, 0.14),
+    0 8px 24px rgba(0, 0, 0, 0.08);
+}
+
+.about-photo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top center;
+  display: block;
+  transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+/* WebGL light rays overlay */
+.about-lightrays-overlay {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  mix-blend-mode: screen;
+  pointer-events: none;
+  z-index: 2;
+  opacity: 1;
+  filter: brightness(1.6) contrast(1.1);
+}
+
+.about-photo-frame:hover .about-photo {
+  transform: scale(1.04);
+}
+
+/* Decorative corner accent square */
+.about-photo-accent {
+  position: absolute;
+  bottom: -12px;
+  right: -12px;
+  width: 80px;
+  height: 80px;
+  border: 2px solid var(--border);
+  border-radius: 12px;
+  pointer-events: none;
+}
+
+/* ── Text column ── */
+.about-text-col {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0;
+}
+
+/* Ordinal number */
+.about-ordinal {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 13px;
+  font-weight: 300;
+  letter-spacing: 0.25em;
+  color: var(--text-muted);
+  margin-bottom: 20px;
+}
+
+
+/* Divider line */
+.about-divider {
+  width: 48px;
+  height: 2px;
+  background: #111;
+  margin-bottom: 20px;
+  border-radius: 2px;
+}
+
+.dark .about-divider {
+  background: #fff;
+}
+
+/* Role subtitle */
+.about-role {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(18px, 2.2vw, 26px);
+  font-weight: 300;
+  font-style: italic;
+  color: var(--text-secondary);
+  letter-spacing: 0.02em;
+  margin-bottom: 28px;
+}
+
+/* Bio text */
+.about-bio {
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  line-height: 1.85;
+  color: var(--text-secondary);
+  max-width: 400px;
+  margin-bottom: 44px;
+}
+
+
+/* ── Responsive ── */
+@media (max-width: 900px) {
+  .about-section {
+    padding: 80px 32px 32px;
+  }
+
+  .about-inner {
+    grid-template-columns: 1fr;
+    gap: 48px;
+  }
+
+  .about-photo-col {
+    justify-content: center;
+  }
+
+  .about-photo-frame {
+    width: min(300px, 80vw);
+  }
+
+  .about-text-col {
+    align-items: center;
+    text-align: center;
+  }
+
+  .about-divider {
+    align-self: center;
+  }
+
+  .about-bio {
+    text-align: left;
+  }
+}
+
+@media (max-width: 480px) {
+  .about-section {
+    padding: 60px 20px 20px;
+  }
+}

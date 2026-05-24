@@ -1,0 +1,302 @@
+/* ============================================
+   Navbar.css
+   ============================================ */
+
+.navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 40px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: #ffffff;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Scrolled state (kept for mobile or future use) */
+.navbar--scrolled {
+  width: fit-content;
+  margin: 8px auto 0; /* adds a small breathing gap from the top edge when scrolled */
+  top: 0;
+  border-radius: 0 0 16px 16px;
+  border: none;
+  outline: none;
+  padding: 6px 12px;
+  background: rgba(255, 255, 255, 0.95);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  left: 0;
+  right: 0;
+}
+
+.navbar--scrolled .navbar-brand,
+.navbar--scrolled .btn-open-to-work {
+  display: none;
+}
+
+/* Ensure side elements transition smoothly if needed */
+.navbar-brand, .btn-open-to-work {
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+/* --- Default Laptop Layout: Always pill-shaped --- */
+@media (min-width: 769px) {
+  .navbar {
+    width: fit-content;
+    margin: 0 auto;
+    top: 0;
+    border-radius: 0 0 16px 16px;
+    padding: 6px 12px;
+    background: rgba(255, 255, 255, 0.95);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    left: 0;
+    right: 0;
+    justify-content: center;
+  }
+  
+  .navbar-brand,
+  .btn-open-to-work {
+    display: none !important;
+  }
+}
+
+/* Brand */
+.navbar-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.navbar-theme-toggler {
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: center;
+  align-self: center;
+  margin-left: 12px;
+}
+
+.brand-name {
+  font-size: 13px;
+  font-weight: 600;
+  color: #111;
+  line-height: 1.3;
+}
+
+.brand-name span {
+  display: block;
+  font-weight: 400;
+  color: #777;
+  font-size: 12px;
+}
+
+/* Nav links pill */
+.navbar-links {
+  display: flex;
+  align-items: center;
+  background: #e4e4e0;
+  border: 1px solid #d0d0cc;
+  border-radius: 12px;
+  padding: 6px;
+  gap: 2px;
+}
+
+.nav-link {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 18px;
+  font-size: 13px;
+  font-weight: 500;
+  color: #555;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+  text-decoration: none;
+}
+
+.nav-link--active {
+  background: #fff;
+  color: #111;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+.nav-link:hover:not(.nav-link--active) {
+  color: #111;
+  background: rgba(255, 255, 255, 0.6);
+}
+
+/* Open to work */
+.btn-open-to-work {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #111;
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  padding: 10px 20px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+  transition: all 0.2s ease;
+}
+
+.dark .btn-open-to-work {
+  background: #fff;
+  color: #111;
+  border: 1px solid #ccc;
+}
+
+.btn-open-to-work:hover {
+  background: #222;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #4ade80;
+  flex-shrink: 0;
+  animation: pulse-dot 2s ease-in-out infinite;
+}
+
+@keyframes pulse-dot {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(74, 222, 128, 0.5); }
+  50%       { box-shadow: 0 0 0 5px rgba(74, 222, 128, 0); }
+}
+
+/* Mobile Menu Toggle */
+.mobile-menu-toggle {
+  display: none;
+  background: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+  z-index: 101;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  color: #111111;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  outline: none;
+}
+
+.dark .mobile-menu-toggle {
+  background: #222222;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.mobile-menu-toggle:hover {
+  transform: scale(1.05);
+}
+
+.mobile-menu-toggle:active {
+  transform: scale(0.95);
+}
+
+/* Mobile Dropdown */
+.mobile-dropdown {
+  display: none;
+  position: absolute;
+  top: calc(100% + 10px);
+  left: 16px;
+  right: 16px;
+  background: rgba(255, 255, 255, 0.98);
+  backdrop-filter: blur(12px);
+  border-radius: 16px;
+  padding: 16px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  flex-direction: column;
+  gap: 12px;
+  opacity: 0;
+  transform: translateY(-10px);
+  pointer-events: none;
+  transition: all 0.3s ease;
+}
+
+.mobile-dropdown.open {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.mobile-dropdown-link {
+  text-decoration: none;
+  color: #111;
+  font-size: 15px;
+  font-weight: 500;
+  padding: 8px 12px;
+  border-radius: 8px;
+  transition: background 0.2s;
+}
+
+.mobile-dropdown-link:hover {
+  background: rgba(255, 255, 255, 0.5);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .navbar {
+    width: auto;
+    margin: 16px 0 0 0;
+    border-radius: 100px;
+    padding: 8px 16px;
+    top: 16px;
+    left: 16px;
+    right: 16px;
+  }
+  
+  .navbar--scrolled {
+    width: auto;
+    border-radius: 100px;
+    padding: 8px 16px;
+    margin: 16px 28px 0; /* increases side margin from 0 → 28px, making navbar narrower */
+  }
+
+  .navbar-links,
+  .btn-open-to-work {
+    display: none;
+  }
+
+  .brand-name span {
+    display: none; /* remove the subtitle text */
+  }
+
+  .navbar--scrolled .navbar-brand {
+    display: flex; /* keep it visible even when scrolled on mobile */
+  }
+
+  .navbar-theme-toggler {
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+    align-self: center;
+    margin-left: auto;
+    margin-right: 12px;
+  }
+
+  .mobile-menu-toggle {
+    display: flex;
+  }
+
+  .mobile-dropdown {
+    display: flex;
+  }
+
+  /* Icon rotation animation when open */
+  .mobile-menu-toggle svg {
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .mobile-menu-toggle.open svg {
+    transform: rotate(180deg);
+  }
+}

@@ -1,0 +1,135 @@
+@import "tailwindcss/theme";
+@import "tailwindcss/utilities";
+@custom-variant dark (&:where(.dark, .dark *));
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  cursor: none !important;
+}
+
+input, textarea {
+  cursor: text !important;
+}
+
+:root {
+  --bg: #f0f0ec;
+  --text-primary: #111111;
+  --text-secondary: #777777;
+  --text-muted: #aaaaaa;
+  --border: #d8d8d4;
+  --dark: #111111;
+  --white: #ffffff;
+  --accent-green: #4ade80;
+  --font: 'Inter', sans-serif;
+}
+
+.dark {
+  --bg: #111111;
+  --text-primary: #f0f0ec;
+  --text-secondary: #aaaaaa;
+  --text-muted: #777777;
+  --border: #333333;
+  --dark: #ffffff;
+  --white: #111111;
+}
+
+html {
+  font-family: var(--font);
+  background: var(--bg);
+  color: var(--text-primary);
+  scroll-behavior: smooth;
+}
+
+body {
+  min-height: 100vh;
+}
+
+.page {
+  position: relative;
+  width: 100%;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+.projects-carousel::-webkit-scrollbar {
+  display: none;
+}
+
+button {
+  cursor: pointer;
+  font-family: var(--font);
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+@utility mask-gradient {
+  mask-image: linear-gradient(to bottom, transparent, black 10%, black 90%, transparent);
+  -webkit-mask-image: linear-gradient(to bottom, transparent, black 10%, black 90%, transparent);
+}
+
+@utility mask-gradient-x {
+  mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+  -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+}
+
+@theme {
+  --animate-marquee-up: marquee-up 12s linear infinite;
+  --animate-marquee-down: marquee-down 12s linear infinite;
+  --animate-marquee-left: marquee-left 12s linear infinite;
+  --animate-marquee-right: marquee-right 12s linear infinite;
+}
+
+@keyframes marquee-up {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(-33.3333%); } /* Moves exactly 1 chunk out of 3 */
+}
+
+@keyframes marquee-down {
+  0% { transform: translateY(-33.3333%); }
+  100% { transform: translateY(0); }
+}
+
+@keyframes marquee-left {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-33.3333%); }
+}
+
+@keyframes marquee-right {
+  0% { transform: translateX(-33.3333%); }
+  100% { transform: translateX(0); }
+}
+
+/* View Transitions for Theme Toggler */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+
+::view-transition-old(root) {
+  z-index: 1;
+}
+
+::view-transition-new(root) {
+  z-index: 9999;
+  /* Prevent top-left flickering by starting with a 0px circle at the click position */
+  clip-path: circle(0px at var(--zoom-x, 50%) var(--zoom-y, 50%));
+}
+
+@media (max-width: 768px) {
+  .desktop-theme-toggler {
+    display: none !important;
+  }
+  
+  /* Prevent sticky navbar from covering section headers on mobile */
+  section, [id] {
+    scroll-margin-top: 80px;
+  }
+}

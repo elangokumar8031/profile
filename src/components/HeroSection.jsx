@@ -107,7 +107,7 @@ function HeroSection({ name, title, description, socials, onCta }) {
                 fontFamily: '"Playfair Display", serif',
                 fontSize: 'clamp(140px, 25vw, 320px)',
                 fontWeight: 900,
-                color: 'var(--white)',
+                color: '#f0f0ec',
                 lineHeight: 1,
                 textShadow: '0 10px 40px rgba(0,0,0,0.1)'
               }}

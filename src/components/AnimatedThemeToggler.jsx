@@ -6,10 +6,8 @@ export function AnimatedThemeToggler({ className = "", style = {} }) {
   const [theme, setTheme] = useState('light');
 
   useEffect(() => {
-    // Check initial theme from localStorage or system preference
-    const isDark = 
-      localStorage.theme === 'dark' || 
-      (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches);
+    // Check initial theme from localStorage (defaulting to light mode)
+    const isDark = localStorage.theme === 'dark';
     
     if (isDark) {
       setTheme('dark');

@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react'
 import { motion } from 'framer-motion'
-import { ArrowUpRight, Globe } from 'lucide-react'
+import { ArrowUpRight, Globe, ArrowRight } from 'lucide-react'
 import project1 from '../assets/project1.mp4'
 import project2 from '../assets/project2.mp4'
 import project3 from '../assets/project3.mp4'
@@ -144,6 +144,21 @@ export default function ProjectsSection() {
         <p className="text-center text-[#666] dark:text-[#aaa] text-lg md:text-xl max-w-2xl mb-12" style={{ fontFamily: '"Inter", sans-serif' }}>
           I've worked on a variety of projects, from simple websites to complex web applications. Here are a few of my favorites.
         </p>
+
+        {/* Right Arrow for Mobile View */}
+        <div className="flex justify-end w-full mb-4 md:hidden pr-4">
+          <button
+            onClick={() => {
+              const nextIndex = (activeIndex + 1) % projects.length
+              scrollTo(nextIndex)
+            }}
+            className="flex items-center justify-center p-3 rounded-full bg-white dark:bg-[#222] border border-gray-200 dark:border-[#333] shadow-sm active:scale-90 transition-transform text-black dark:text-white pointer-events-auto"
+            aria-label="Next projects"
+            style={{ cursor: 'pointer' }}
+          >
+            <ArrowRight size={20} />
+          </button>
+        </div>
 
         {/* Carousel Container */}
         <div className="w-full relative">

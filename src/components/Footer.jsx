@@ -15,7 +15,7 @@ export default function Footer() {
           </span>
           <div className="flex gap-4 items-center">
             <a 
-              href="https://instagram.com" 
+              href="https://www.instagram.com/emperor_elango_08/" 
               target="_blank" 
               rel="noopener noreferrer" 
               className="text-gray-500 dark:text-gray-400 hover:text-[#e1306c] hover:scale-110 transition-all duration-300"
@@ -42,7 +42,7 @@ export default function Footer() {
               <IconFacebook />
             </a>
             <a 
-              href="https://x.com" 
+              href="https://x.com/ElangoK29516952" 
               target="_blank" 
               rel="noopener noreferrer" 
               className="text-gray-500 dark:text-gray-400 hover:text-black dark:hover:text-white hover:scale-110 transition-all duration-300"

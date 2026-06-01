@@ -6,7 +6,12 @@ export function AnimatedThemeToggler({ className = "", style = {} }) {
   const [theme, setTheme] = useState('light');
 
   useEffect(() => {
-    // Check initial theme from localStorage (defaulting to light mode)
+    // If this is a new session (opened fresh), reset localStorage to light mode
+    if (!sessionStorage.getItem('portfolio_session_initialized')) {
+      sessionStorage.setItem('portfolio_session_initialized', 'true');
+      localStorage.setItem('theme', 'light');
+    }
+
     const isDark = localStorage.theme === 'dark';
     
     if (isDark) {

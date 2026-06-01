@@ -6,6 +6,13 @@
   margin: 0;
   padding: 0;
   cursor: none !important;
+  scrollbar-width: none !important; /* Firefox */
+  -ms-overflow-style: none !important; /* IE/Edge */
+}
+
+/* Hide scrollbar globally for Webkit browsers (Chrome, Safari, Edge) */
+::-webkit-scrollbar {
+  display: none !important;
 }
 
 input, textarea {
@@ -39,10 +46,13 @@ html {
   background: var(--bg);
   color: var(--text-primary);
   scroll-behavior: smooth;
+  overflow-x: hidden;
 }
 
 body {
   min-height: 100vh;
+  overflow-y: visible;
+  overflow-x: hidden;
 }
 
 .page {
@@ -53,10 +63,6 @@ body {
 a {
   text-decoration: none;
   color: inherit;
-}
-
-.projects-carousel::-webkit-scrollbar {
-  display: none;
 }
 
 button {

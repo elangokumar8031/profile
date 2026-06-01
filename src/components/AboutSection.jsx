@@ -1,3 +1,4 @@
+import { useEffect, useRef, useState } from 'react'
 import profileImg from '../assets/profile.png'
 import './AboutSection.css'
 import { motion } from 'framer-motion'
@@ -18,7 +19,7 @@ const textColVariants = {
     opacity: 1,
     y: 0,
     filter: "blur(0px)",
-    transition: { duration: 1.2, delay: 1.1, ease: "easeOut" }
+    transition: { duration: 0.8, delay: 0.3, ease: "easeOut" }
   }
 }
 
@@ -28,13 +29,84 @@ const textColVariants = {
  * Right: name in a classy display font + subtle tagline
  */
 function AboutSection({ name = 'Your Name', photoSrc = profileImg }) {
+  const sectionRef = useRef(null)
+  const frameRef = useRef(null)
+
+  const [initialX, setInitialX] = useState(500)
+  const [initialY, setInitialY] = useState(-500)
+  const [isPositioned, setIsPositioned] = useState(false)
+  const [skipAnimation, setSkipAnimation] = useState(false)
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const alreadyAnimated = sessionStorage.getItem('portfolio_about_image_animated') === 'true'
+      const isScrolledDown = window.scrollY > 100
+      
+      // If the user already animated the image in this session,
+      // or if the page refreshed and is already scrolled down, skip the animation:
+      if (alreadyAnimated || isScrolledDown) {
+        setSkipAnimation(true)
+      }
+    }
+  }, [])
+
+  useEffect(() => {
+    const calculatePositions = () => {
+      if (frameRef.current) {
+        const rect = frameRef.current.getBoundingClientRect()
+        const scrollLeft = window.pageXOffset || document.documentElement.scrollLeft
+        
+        const absoluteLeft = rect.left + scrollLeft
+        
+        // Calculate the translation offsets required to place the image
+        // at the top-right corner of the viewport (off-screen):
+        // X starting point = window.innerWidth + rect.width (off-screen right)
+        // Y starting point = -window.innerHeight - rect.height (off-screen top)
+        setInitialX(window.innerWidth - absoluteLeft + rect.width)
+        setInitialY(-window.innerHeight - rect.height)
+        setIsPositioned(true)
+      }
+    }
+    
+    // Short timeout to guarantee layout calculations run after rendering
+    const timer = setTimeout(calculatePositions, 150)
+    
+    window.addEventListener('resize', calculatePositions)
+    return () => {
+      clearTimeout(timer)
+      window.removeEventListener('resize', calculatePositions)
+    }
+  }, [])
+
+  // Variants to control the fly-in transition from the top-right viewport corner.
+  // If skipAnimation is true, the image is rendered immediately in its final place.
+  const photoFrameVariants = {
+    hidden: (custom) => ({
+      x: skipAnimation ? 0 : (custom?.initialX ?? 500),
+      y: skipAnimation ? 0 : (custom?.initialY ?? -500),
+      opacity: skipAnimation ? 1 : 0
+    }),
+    visible: {
+      x: 0,
+      y: 0,
+      opacity: 1,
+      transition: skipAnimation ? { duration: 0 } : {
+        type: "spring",
+        stiffness: 55,
+        damping: 18,
+        restDelta: 0.001
+      }
+    }
+  }
+
   return (
     <motion.section 
+      ref={sectionRef}
       className="about-section" 
       id="about"
       initial="hidden"
       whileInView="visible"
-      viewport={{ once: true, amount: 0.2 }}
+      viewport={{ once: true, amount: 0.25 }}
     >
       <motion.div className="about-bg-text" variants={bgTextVariants}>
         ABOUT
@@ -44,14 +116,26 @@ function AboutSection({ name = 'Your Name', photoSrc = profileImg }) {
 
         {/* ── Photo column ── */}
         <div className="about-photo-col">
-          <div className="about-photo-frame">
+          <motion.div 
+            ref={frameRef}
+            className="about-photo-frame"
+            custom={{ initialX, initialY }}
+            variants={photoFrameVariants}
+            style={{ opacity: isPositioned ? undefined : 0 }}
+            onAnimationComplete={(definition) => {
+              if (definition === 'visible' && !skipAnimation) {
+                sessionStorage.setItem('portfolio_about_image_animated', 'true')
+                setSkipAnimation(true)
+              }
+            }}
+          >
             <PixelImage
               src={photoSrc}
               alt={name}
               customGrid={{ rows: 4, cols: 6 }}
               grayscaleAnimation
             />
-          </div>
+          </motion.div>
         </div>
 
         {/* ── Text column ── */}

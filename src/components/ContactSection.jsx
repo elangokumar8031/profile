@@ -82,11 +82,11 @@ export default function ContactSection({ initialRequest, onClearRequest }) {
       
       {/* Section Header */}
       <div className="flex items-center justify-center mb-12 md:mb-16 w-full max-w-4xl mx-auto">
-        <div className="flex-1 h-[1px] bg-black/10 dark:bg-white/10"></div>
+        <div className="flex-1 h-[1px] bg-black/10 dark:bg-white/20"></div>
         <h2 className="mx-4 sm:mx-8 text-4xl md:text-5xl font-light tracking-wide text-black dark:text-white text-center" style={{ fontFamily: '"Playfair Display", serif' }}>
           Contact <span>Me</span>
         </h2>
-        <div className="flex-1 h-[1px] bg-black/10 dark:bg-white/10"></div>
+        <div className="flex-1 h-[1px] bg-black/10 dark:bg-white/20"></div>
       </div>
 
       {/* Contact Form Card */}

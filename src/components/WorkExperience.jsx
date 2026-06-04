@@ -6,6 +6,7 @@ import srnmLogo from '../assets/srnmlogo.png'
 import freelancerLogo from '../assets/freelanceerlogo.png'
 import ieeePdf from '../assets/IEEE certificate.jpg'
 import nptelImg from '../assets/NPTEL certifications.jpeg'
+import patentPdf from '../assets/patent.pdf'
 import { Eye, X, ExternalLink } from 'lucide-react'
 
 const LogoContainer = ({ bgColor, children }) => (
@@ -73,6 +74,13 @@ const certificates = [
     type: 'E-Certificate',
     file: nptelImg,
     isPdf: false
+  },
+  {
+    title: 'Patent Publication',
+    issuer: 'Patent Office',
+    type: 'PDF Document',
+    file: patentPdf,
+    isPdf: true
   }
 ]
 
@@ -107,11 +115,11 @@ export default function WorkExperience() {
       
       {/* Header */}
       <div className="flex items-center justify-center mb-12 md:mb-16 w-full max-w-4xl mx-auto">
-        <div className="flex-1 h-[1px] bg-black/10"></div>
+        <div className="flex-1 h-[1px] bg-black/10 dark:bg-white/20"></div>
         <h2 className="mx-4 sm:mx-8 text-4xl md:text-5xl font-light tracking-wide text-black dark:text-white text-center" style={{ fontFamily: '"Playfair Display", serif' }}>
           Education & Experience
         </h2>
-        <div className="flex-1 h-[1px] bg-black/10"></div>
+        <div className="flex-1 h-[1px] bg-black/10 dark:bg-white/20"></div>
       </div>
 
       <div className="flex flex-col w-full max-w-2xl mx-auto">
@@ -175,12 +183,10 @@ export default function WorkExperience() {
       </div>
 
       {/* Certifications Sub-Header */}
-      <div className="flex items-center justify-center mt-16 mb-8 w-full max-w-2xl mx-auto">
-        <div className="flex-1 h-[1px] bg-black/10 dark:bg-white/10"></div>
-        <h3 className="mx-4 text-2xl font-light tracking-wide text-black dark:text-white" style={{ fontFamily: '"Playfair Display", serif' }}>
+      <div className="flex justify-center mt-16 mb-8 w-full max-w-2xl mx-auto">
+        <h3 className="text-2xl font-light tracking-wide text-black dark:text-white" style={{ fontFamily: '"Playfair Display", serif' }}>
           Certifications
         </h3>
-        <div className="flex-1 h-[1px] bg-black/10 dark:bg-white/10"></div>
       </div>
 
       {/* Certificates Grid */}

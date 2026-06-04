@@ -35,16 +35,24 @@ function AboutSection({ name = 'Your Name', photoSrc = profileImg }) {
   const [initialX, setInitialX] = useState(500)
   const [initialY, setInitialY] = useState(-500)
   const [isPositioned, setIsPositioned] = useState(false)
-  const [skipAnimation, setSkipAnimation] = useState(false)
+  const [skipAnimation, setSkipAnimation] = useState(() => {
+    if (typeof window !== 'undefined') {
+      const alreadyAnimated = sessionStorage.getItem('portfolio_about_image_animated') === 'true'
+      const isMobileWidth = window.innerWidth <= 900
+      return alreadyAnimated || isMobileWidth
+    }
+    return false
+  })
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
       const alreadyAnimated = sessionStorage.getItem('portfolio_about_image_animated') === 'true'
       const isScrolledDown = window.scrollY > 100
+      const isMobileWidth = window.innerWidth <= 900
       
       // If the user already animated the image in this session,
-      // or if the page refreshed and is already scrolled down, skip the animation:
-      if (alreadyAnimated || isScrolledDown) {
+      // if the page refreshed and is already scrolled down, or if we are on mobile, skip the animation:
+      if (alreadyAnimated || isScrolledDown || isMobileWidth) {
         setSkipAnimation(true)
       }
     }
@@ -65,6 +73,11 @@ function AboutSection({ name = 'Your Name', photoSrc = profileImg }) {
         setInitialX(window.innerWidth - absoluteLeft + rect.width)
         setInitialY(-window.innerHeight - rect.height)
         setIsPositioned(true)
+
+        // If window is resized to mobile, make sure we skip animation:
+        if (window.innerWidth <= 900) {
+          setSkipAnimation(true)
+        }
       }
     }
     
@@ -121,7 +134,7 @@ function AboutSection({ name = 'Your Name', photoSrc = profileImg }) {
             className="about-photo-frame"
             custom={{ initialX, initialY }}
             variants={photoFrameVariants}
-            style={{ opacity: isPositioned ? undefined : 0 }}
+            style={{ opacity: (skipAnimation || isPositioned) ? undefined : 0 }}
             onAnimationComplete={(definition) => {
               if (definition === 'visible' && !skipAnimation) {
                 sessionStorage.setItem('portfolio_about_image_animated', 'true')

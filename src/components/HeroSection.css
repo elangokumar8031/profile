@@ -57,14 +57,7 @@
   padding: 10px 0;
 }
 
-.hero-name-display span {
-  display: inline-block;
-  -webkit-text-fill-color: var(--text-primary); /* Fallback to solid color for the rolling initial */
-  background: none;
-  -webkit-background-clip: unset;
-  background-clip: unset;
-  margin-right: 0.04em; /* Restore spacing lost by inline-block */
-}
+
 
 @keyframes text-glare {
   0%, 77% {

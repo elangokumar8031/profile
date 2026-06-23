@@ -1,8 +1,6 @@
 import { useState, useEffect } from 'react'
-import { createPortal } from 'react-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import SidebarLeft  from './SidebarLeft'
-import HeroImage    from './HeroImage'
 import HeroText     from './HeroText'
 import { Particles } from './Particles'
 import './HeroSection.css'
@@ -22,11 +20,6 @@ function HeroSection({ name, title, description, socials, onCta }) {
   const [showIntro, setShowIntro] = useState(() => {
     return !sessionStorage.getItem('introPlayed')
   })
-  const initialLetter = name ? name.charAt(0) : 'E'
-
-  // Dynamic start delay: wait for the intro screen animation to finish (2.2s + 0.2s buffer)
-  // or start almost immediately if skipped
-  const startDelay = showIntro ? 2.4 : 0.2
 
   const [isDark, setIsDark] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
@@ -122,59 +115,9 @@ function HeroSection({ name, title, description, socials, onCta }) {
 
       <main className="hero-center">
         <div className="hero-name-container">
-          <motion.h1 
-            className="hero-name-display" 
-            style={{ position: 'relative' }}
-            animate={{ x: 1.5 }}
-            transition={{ 
-              delay: startDelay + 0.8, 
-              duration: 0.8, 
-              ease: "easeOut" 
-            }}
-          >
-            {/* Animate each letter of the first name to center themselves */}
-            {name.split(' ').slice(0, -1).join(' ').split('').map((char, i, arr) => (
-              <motion.span
-                key={i}
-                layout // Enable automatic layout animation
-                style={{ display: 'inline-block', whiteSpace: 'pre' }}
-                transition={{ 
-                  layout: {
-                    delay: startDelay + (arr.length - i) * 0.08, // Sync with 'K' roll start
-                    duration: 0.8,
-                    ease: "easeOut"
-                  }
-                }}
-              >
-                {char}
-              </motion.span>
-            ))}
-
-            {/* The rolling initial */}
-            <motion.span
-              style={{ 
-                display: 'inline-block',
-                marginLeft: '0.3em',
-                whiteSpace: 'nowrap',
-                overflow: 'visible'
-              }}
-              initial={{ x: 0, rotate: 0, opacity: 1, width: 'auto' }}
-              animate={{ 
-                x: '100vw', 
-                rotate: 1440,
-                opacity: 0,
-                width: 0,
-                marginLeft: 0
-              }}
-              transition={{ 
-                delay: startDelay,
-                duration: 3, 
-                ease: [0.32, 0, 0.67, 0] 
-              }}
-            >
-              {name.split(' ').slice(-1)}
-            </motion.span>
-          </motion.h1>
+          <h1 className="hero-name-display">
+            {name}
+          </h1>
         </div>
         <HeroText title={title} description={description} onCta={onCta} />
       </main>

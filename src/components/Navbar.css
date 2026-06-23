@@ -13,16 +13,21 @@
   background: #ffffff;
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
+  /* Only transition visual properties — never layout ones (margin, width) to avoid jumps */
   transition: padding 0.3s cubic-bezier(0.4, 0, 0.2, 1),
               background 0.3s cubic-bezier(0.4, 0, 0.2, 1),
               box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1),
               border-radius 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  /* Isolate the navbar from the View Transitions API root snapshot
+     so theme-toggle animation does not cause it to jump */
+  view-transition-name: navbar;
+  contain: layout style;
 }
 
-/* Scrolled state (kept for mobile or future use) */
+/* Scrolled state (desktop fallback) */
 .navbar--scrolled {
   width: fit-content;
-  margin: 8px auto 0; /* adds a small breathing gap from the top edge when scrolled */
+  margin: 8px auto 0;
   top: 0;
   border-radius: 0 0 16px 16px;
   border: none;
@@ -250,19 +255,22 @@
 @media (max-width: 768px) {
   .navbar {
     width: auto;
+    /* Keep margin fixed — never change it between scrolled/non-scrolled to prevent layout jumps */
     margin: 16px 0 0 0;
     border-radius: 100px;
     padding: 8px 16px;
     top: 16px;
     left: 16px;
     right: 16px;
+    contain: none; /* Reset contain for mobile so position: sticky works correctly */
   }
   
   .navbar--scrolled {
     width: auto;
     border-radius: 100px;
+    /* Slightly tighter padding for "scrolled" feel, but NO margin change */
     padding: 6px 14px;
-    margin: 16px 0 0 0; /* keep margin stable to prevent layout jumps on re-render */
+    margin: 16px 0 0 0;
   }
 
   .navbar-links,

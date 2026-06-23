@@ -126,6 +126,13 @@ img {
   clip-path: circle(0px at var(--zoom-x, 50%) var(--zoom-y, 50%));
 }
 
+/* Exclude the navbar from the view transition so it doesn't jump on theme toggle */
+::view-transition-old(navbar),
+::view-transition-new(navbar) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+
 @media (max-width: 768px) {
   .desktop-theme-toggler {
     display: none !important;

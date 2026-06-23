@@ -256,12 +256,12 @@
   .navbar {
     width: auto;
     /* Keep margin fixed — never change it between scrolled/non-scrolled to prevent layout jumps */
-    margin: 16px 0 0 0;
+    margin: 16px 16px 0 16px;
     border-radius: 100px;
     padding: 8px 16px;
     top: 16px;
-    left: 16px;
-    right: 16px;
+    left: 0;
+    right: 0;
     contain: none; /* Reset contain for mobile so position: sticky works correctly */
   }
   
@@ -270,7 +270,7 @@
     border-radius: 100px;
     /* Slightly tighter padding for "scrolled" feel, but NO margin change */
     padding: 6px 14px;
-    margin: 16px 0 0 0;
+    margin: 16px 16px 0 16px;
   }
 
   .navbar-links,

@@ -30,7 +30,7 @@
   font-family: 'Outfit', sans-serif;
   font-size: clamp(40px, 10vw, 80px);
   font-weight: 900;
-  letter-spacing: -0.02em;
+  letter-spacing: 0.12em;
   color: var(--text-primary);
   line-height: 1.1;
   text-transform: uppercase;

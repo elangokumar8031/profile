@@ -15,6 +15,7 @@ function HeroText({
   description = 'Focused on building scalable and efficient architectures that empower businesses to run reliable systems. My expertise lies in databases, APIs, and performance optimization to deliver smooth user experiences.',
   ctaLabel    = 'Get in touch',
   onCta,
+  animationDelay = 0,
 }) {
   const handleScroll = (direction) => {
     window.scrollBy({ top: direction === 'down' ? 300 : -300, behavior: 'smooth' })
@@ -35,6 +36,7 @@ function HeroText({
           textColor="var(--text-primary)"
           strokeColor="#5227FF"
           minFontSize={22}
+          animationDelay={animationDelay}
         />
       </div>
       <p className="hero-desc">{description}</p>

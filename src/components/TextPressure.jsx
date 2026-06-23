@@ -44,6 +44,7 @@ const TextPressure = ({
   className   = '',
 
   minFontSize = 28,
+  animationDelay = 0,
 }) => {
   const containerRef = useRef(null);
   const titleRef     = useRef(null);
@@ -128,8 +129,13 @@ const TextPressure = ({
     const animate = () => {
       if (isInitialAnimation) {
         const elapsed = Date.now() - initialStartTimeRef.current;
+        if (elapsed < animationDelay) {
+          rafId = requestAnimationFrame(animate);
+          return;
+        }
+        
         const duration = 2000; // 2 seconds sweep
-        const progress = Math.min(elapsed / duration, 1);
+        const progress = Math.min((elapsed - animationDelay) / duration, 1);
         
         if (titleRef.current) {
           const titleRect = titleRef.current.getBoundingClientRect();

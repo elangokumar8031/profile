@@ -21,6 +21,9 @@ function HeroSection({ name, title, description, socials, onCta }) {
     return !sessionStorage.getItem('introPlayed')
   })
 
+  // Dynamic start delay: wait for the intro screen animation to finish (2.2s + 0.2s buffer)
+  const animationDelay = showIntro ? 2400 : 200;
+
   const [isDark, setIsDark] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
 
@@ -119,7 +122,7 @@ function HeroSection({ name, title, description, socials, onCta }) {
             {name}
           </h1>
         </div>
-        <HeroText title={title} description={description} onCta={onCta} />
+        <HeroText title={title} description={description} onCta={onCta} animationDelay={animationDelay} />
       </main>
       
       {/* SidebarRight removed to become a global component */}

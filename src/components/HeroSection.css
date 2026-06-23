@@ -28,9 +28,10 @@
 
 .hero-name-display {
   font-family: 'Outfit', sans-serif;
-  font-size: clamp(28px, 8vw, 80px);
+  /* vw-based sizing scales naturally to fill the container on all screen sizes */
+  font-size: clamp(36px, 7.5vw, 80px);
   font-weight: 900;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.08em;
   color: var(--text-primary);
   line-height: 1.1;
   text-transform: uppercase;
@@ -80,8 +81,9 @@
   }
 
   .hero-name-display {
-    font-size: clamp(24px, 7.5vw, 60px);
-    letter-spacing: 0.06em;
+    /* On mobile, use viewport-width scaling so it fills the screen naturally */
+    font-size: clamp(28px, 7.5vw, 52px);
+    letter-spacing: 0.05em;
     white-space: nowrap;
   }
 }

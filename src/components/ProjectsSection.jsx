@@ -21,7 +21,7 @@ const projects = [
     date: 'Jan 2024 - Feb 2024',
     description: 'A premium full-stack South Indian sweets & savouries e-commerce platform. Features multi-step verification, pincode-based address lookup, secure admin portal, and phone number OTP verification.',
     video: project1,
-    isMobile: true,
+    isAndroid: true,
     links: [
       { label: 'Source', url: 'https://github.com/elangokumar8031/vvskadalaimuttai-frontend', icon: GithubIcon }
     ],

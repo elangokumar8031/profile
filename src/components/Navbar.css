@@ -13,7 +13,10 @@
   background: #ffffff;
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: padding 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+              background 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+              box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+              border-radius 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /* Scrolled state (kept for mobile or future use) */
@@ -258,8 +261,8 @@
   .navbar--scrolled {
     width: auto;
     border-radius: 100px;
-    padding: 8px 16px;
-    margin: 16px 28px 0; /* increases side margin from 0 → 28px, making navbar narrower */
+    padding: 6px 14px;
+    margin: 16px 0 0 0; /* keep margin stable to prevent layout jumps on re-render */
   }
 
   .navbar-links,

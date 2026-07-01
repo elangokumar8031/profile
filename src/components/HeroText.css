@@ -14,9 +14,9 @@
    overflow is set to visible to prevent wide variable-font glyphs from being clipped at the edges. */
 .hero-title-pressure {
   width: 100%;
-  max-width: 420px;
+  max-width: 540px;
   margin: 0 auto 20px;
-  height: clamp(50px, 7vw, 80px);
+  height: clamp(65px, 9vw, 95px);
   overflow: visible;
 }
 

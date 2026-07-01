@@ -31,6 +31,7 @@ function HeroText({
           width
           weight
           italic
+          scale={true}
           textColor="var(--text-primary)"
           strokeColor="#5227FF"
           minFontSize={18}

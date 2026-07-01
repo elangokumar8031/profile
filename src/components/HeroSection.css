@@ -27,12 +27,14 @@
 }
 
 /* TextPressure wrapper — explicit height is required (TextPressure fills 100% height).
-   overflow is intentionally visible: hero-section clips any real overflow at section level. */
+   margin-right compensates for the fixed SidebarRight (padding: 0 40px on right)
+   so the text is visually centered on screen rather than grid-centered. */
 .hero-title-pressure {
   position: relative;
   width: 100%;
   max-width: 500px;
   margin: 0 auto 20px;
+  margin-right: 40px;    /* shift left to visually center against SidebarRight offset */
   height: clamp(60px, 8vw, 90px);
   touch-action: pan-y;
 }

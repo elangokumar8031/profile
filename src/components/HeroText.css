@@ -9,6 +9,20 @@
   padding: 0 20px 40px;
 }
 
+/* TextPressure wrapper — max-width is constrained to keep calculated font size small.
+   overflow is set to visible to prevent wide variable-font glyphs from being clipped at the edges. */
+.hero-title-pressure {
+  width: 100%;
+  max-width: 480px;
+  margin: 0 auto 20px;
+  height: clamp(50px, 7vw, 80px);
+  overflow: visible;
+}
+
+.text-pressure-title {
+  overflow: visible !important;
+}
+
 /* Description */
 .hero-desc {
   font-size: 13px;
@@ -101,6 +115,14 @@
 }
 
 @media (max-width: 768px) {
+  .hero-title-pressure {
+    padding: 0 10px;
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    touch-action: pan-y; /* Ensure touchmove doesn't block vertical scroll */
+  }
+
   .hero-text {
     touch-action: pan-y;
   }

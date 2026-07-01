@@ -15,7 +15,7 @@ import './HeroSection.css'
  *   socials     {array}   — Override social links (passed to SidebarLeft)
  *   onCta       {fn}      — "Get in touch" click handler
  */
-function HeroSection({ name, title, description, socials, onCta }) {
+function HeroSection({ name, description, socials, onCta }) {
   // Ensure animation plays only once per session
   const [showIntro, setShowIntro] = useState(() => {
     return !sessionStorage.getItem('introPlayed')
@@ -119,7 +119,7 @@ function HeroSection({ name, title, description, socials, onCta }) {
             {name}
           </h1>
         </div>
-        <HeroText title={title} description={description} onCta={onCta} />
+        <HeroText description={description} onCta={onCta} />
       </main>
       
       {/* SidebarRight removed to become a global component */}

@@ -11,7 +11,6 @@ import './HeroText.css'
  *   onCta       {fn}     — CTA click handler
  */
 function HeroText({
-  title       = 'Front End Engineer',
   description = 'Focused on building scalable and efficient architectures that empower businesses to run reliable systems. My expertise lies in databases, APIs, and performance optimization to deliver smooth user experiences.',
   ctaLabel    = 'Get in touch',
   onCta,
@@ -25,7 +24,7 @@ function HeroText({
       {/* ── Interactive TextPressure title ── */}
       <div className="hero-title-pressure">
         <TextPressure
-          text={title}
+          text="Hello!"
           flex
           alpha={false}
           stroke={false}

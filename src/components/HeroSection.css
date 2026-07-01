@@ -71,17 +71,32 @@
 
 @media (max-width: 768px) {
   .hero-section {
-    grid-template-columns: 50px 1fr 50px;
+    grid-template-columns: 44px 1fr 44px;
   }
 
   .hero-center {
-    padding: 0 10px;
+    padding: 0 8px;
     touch-action: pan-y; /* Allow vertical scroll from center column on mobile */
   }
 
   .hero-name-display {
-    font-size: clamp(24px, 7.5vw, 60px);
-    letter-spacing: 0.06em;
+    font-size: clamp(24px, 7vw, 50px);
+    letter-spacing: 0.05em;
     white-space: nowrap;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero-section {
+    grid-template-columns: 38px 1fr 38px;
+  }
+
+  .hero-center {
+    padding: 0 4px;
+  }
+
+  .hero-name-display {
+    font-size: clamp(20px, 6.8vw, 36px);
+    letter-spacing: 0.03em;
   }
 }

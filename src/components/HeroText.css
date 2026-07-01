@@ -117,7 +117,7 @@
 
 @media (max-width: 768px) {
   .hero-title-pressure {
-    padding: 0 10px;
+    padding: 0;
     width: 100%;
     margin-left: auto;
     margin-right: auto;
@@ -125,6 +125,19 @@
   }
 
   .hero-text {
+    padding: 0 10px 30px;
     touch-action: pan-y;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero-title-pressure {
+    height: clamp(45px, 12vw, 60px);
+  }
+
+  .hero-desc {
+    font-size: 13px;
+    padding: 0 4px;
+    margin-bottom: 22px;
   }
 }

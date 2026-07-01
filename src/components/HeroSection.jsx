@@ -134,8 +134,7 @@ function HeroSection({ name, title, description, socials, onCta }) {
             italic
             textColor="var(--text-primary)"
             strokeColor="#5227FF"
-            minFontSize={22}
-            animationDelay={animationDelay}
+            minFontSize={18}
           />
         </div>
 

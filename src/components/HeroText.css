@@ -118,9 +118,10 @@
 @media (max-width: 768px) {
   .hero-title-pressure {
     padding: 0;
-    width: 100%;
-    margin-left: auto;
-    margin-right: auto;
+    width: 82%;
+    max-width: 380px;
+    margin: -5px auto 20px;
+    height: clamp(40px, 8vw, 55px);
     touch-action: pan-y; /* Ensure touchmove doesn't block vertical scroll */
   }
 
@@ -132,7 +133,9 @@
 
 @media (max-width: 480px) {
   .hero-title-pressure {
-    height: clamp(45px, 12vw, 60px);
+    width: 78%;
+    max-width: 290px;
+    height: clamp(36px, 9vw, 48px);
   }
 
   .hero-desc {

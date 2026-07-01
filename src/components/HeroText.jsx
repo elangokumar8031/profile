@@ -24,7 +24,7 @@ function HeroText({
       {/* ── Interactive TextPressure title ── */}
       <div className="hero-title-pressure">
         <TextPressure
-          text="Hello!"
+          text="FRONT END ENGINEER"
           flex
           alpha={false}
           stroke={false}
@@ -33,7 +33,7 @@ function HeroText({
           italic
           textColor="var(--text-primary)"
           strokeColor="#5227FF"
-          minFontSize={18}
+          minFontSize={16}
         />
       </div>
       <p className="hero-desc">{description}</p>

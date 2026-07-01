@@ -10,11 +10,11 @@
 }
 
 /* TextPressure wrapper — max-width is constrained to keep calculated font size small.
-   Since "Hello!" is short, we constrain this wrapper to 220px to keep the font size around 70px.
+   Since "FRONT END ENGINEER" is 19 chars, we constrain this wrapper to 380px to keep the font size around 40px.
    overflow is set to visible to prevent wide variable-font glyphs from being clipped at the edges. */
 .hero-title-pressure {
   width: 100%;
-  max-width: 220px;
+  max-width: 380px;
   margin: 0 auto 20px;
   height: clamp(50px, 7vw, 80px);
   overflow: visible;

@@ -1,8 +1,9 @@
 // Component ported from https://codepen.io/JuanFuentes/full/rgXKGQ
-// Font: https://compressa.preusstype.com/
+// Variable font: https://compressa.preusstype.com/
 
 import { useEffect, useRef, useState, useMemo, useCallback } from 'react';
 
+/* ─── helpers ─── */
 const dist = (a, b) => {
   const dx = b.x - a.x;
   const dy = b.y - a.y;
@@ -18,32 +19,32 @@ const debounce = (func, delay) => {
   let timeoutId;
   return (...args) => {
     clearTimeout(timeoutId);
-    timeoutId = setTimeout(() => {
-      func.apply(this, args);
-    }, delay);
+    timeoutId = setTimeout(() => func(...args), delay);
   };
 };
 
+/* ─── component ─── */
 const TextPressure = ({
-  text         = 'Front End Engineer',
-  fontFamily   = 'Compressa VF',
-  fontUrl      = 'https://res.cloudinary.com/dr6lvwubh/raw/upload/v1529908256/CompressaPRO-GX.woff2',
+  text        = 'Front End Engineer',
+  fontFamily  = 'Compressa VF',
+  fontUrl     = 'https://res.cloudinary.com/dr6lvwubh/raw/upload/v1529908256/CompressaPRO-GX.woff2',
 
-  width        = true,
-  weight       = true,
-  italic       = true,
-  alpha        = false,
+  width       = true,
+  weight      = true,
+  italic      = true,
+  alpha       = false,
 
-  flex         = true,
-  stroke       = false,
-  scale        = false,
+  flex        = true,
+  stroke      = false,
+  scale       = false,
 
-  textColor    = 'var(--text-primary)',
-  strokeColor  = '#5227FF',
-  strokeWidth  = 2,
-  className    = '',
+  textColor   = '#111111',
+  strokeColor = '#5227FF',
+  strokeWidth = 2,
+  className   = '',
 
-  minFontSize  = 24,
+  minFontSize = 28,
+  animationDelay = 0,
 }) => {
   const containerRef = useRef(null);
   const titleRef     = useRef(null);
@@ -52,53 +53,55 @@ const TextPressure = ({
   const mouseRef  = useRef({ x: 0, y: 0 });
   const cursorRef = useRef({ x: 0, y: 0 });
 
-  const [fontSize,   setFontSize]   = useState(minFontSize);
-  const [scaleY,     setScaleY]     = useState(1);
-  const [lineHeight, setLineHeight] = useState(1);
+  const [fontSize,    setFontSize]    = useState(minFontSize);
+  const [scaleY,      setScaleY]      = useState(1);
+  const [lineHeight,  setLineHeight]  = useState(1);
+  const [isInitialAnimation, setIsInitialAnimation] = useState(true);
+  const initialStartTimeRef = useRef(Date.now());
 
   const chars = text.split('');
 
-  /* ── window-level mouse / touch tracking ── */
+  /* ── track cursor / touch ── */
   useEffect(() => {
-    const handleMouseMove = e => {
+    const container = containerRef.current;
+    if (!container) return;
+
+    const onMouseMove = e => {
       cursorRef.current.x = e.clientX;
       cursorRef.current.y = e.clientY;
     };
-    const handleTouchMove = e => {
-      const t = e.touches[0];
-      cursorRef.current.x = t.clientX;
-      cursorRef.current.y = t.clientY;
+    const onTouchMove = e => {
+      cursorRef.current.x = e.touches[0].clientX;
+      cursorRef.current.y = e.touches[0].clientY;
+    };
+    const onMouseLeave = () => {
+      cursorRef.current.x = -10000;
+      cursorRef.current.y = -10000;
     };
 
-    window.addEventListener('mousemove', handleMouseMove);
-    window.addEventListener('touchmove', handleTouchMove, { passive: true });
+    container.addEventListener('mousemove', onMouseMove);
+    container.addEventListener('touchmove', onTouchMove, { passive: true });
+    container.addEventListener('mouseleave', onMouseLeave);
 
-    // Seed mouse to container center so font isn't stuck at default
-    if (containerRef.current) {
-      const { left, top, width, height } = containerRef.current.getBoundingClientRect();
-      mouseRef.current.x  = left + width  / 2;
-      mouseRef.current.y  = top  + height / 2;
-      cursorRef.current.x = mouseRef.current.x;
-      cursorRef.current.y = mouseRef.current.y;
-    }
+    // Initial state: far away
+    cursorRef.current = { x: -10000, y: -10000 };
+    mouseRef.current  = { x: -10000, y: -10000 };
 
     return () => {
-      window.removeEventListener('mousemove', handleMouseMove);
-      window.removeEventListener('touchmove', handleTouchMove);
+      container.removeEventListener('mousemove', onMouseMove);
+      container.removeEventListener('touchmove', onTouchMove);
+      container.removeEventListener('mouseleave', onMouseLeave);
     };
   }, []);
 
-  /* ── responsive font sizing ── */
+  /* ── responsive sizing ── */
   const setSize = useCallback(() => {
     if (!containerRef.current || !titleRef.current) return;
 
-    const { width: containerW, height: containerH } =
-      containerRef.current.getBoundingClientRect();
+    const { width: cW, height: cH } = containerRef.current.getBoundingClientRect();
+    let newFS = Math.max(cW / (chars.length / 2), minFontSize);
 
-    let newFontSize = containerW / (chars.length / 2);
-    newFontSize = Math.max(newFontSize, minFontSize);
-
-    setFontSize(newFontSize);
+    setFontSize(newFS);
     setScaleY(1);
     setLineHeight(1);
 
@@ -106,9 +109,9 @@ const TextPressure = ({
       if (!titleRef.current) return;
       const textRect = titleRef.current.getBoundingClientRect();
       if (scale && textRect.height > 0) {
-        const yRatio = containerH / textRect.height;
-        setScaleY(yRatio);
-        setLineHeight(yRatio);
+        const ratio = cH / textRect.height;
+        setScaleY(ratio);
+        setLineHeight(ratio);
       }
     });
   }, [chars.length, minFontSize, scale]);
@@ -120,39 +123,56 @@ const TextPressure = ({
     return () => window.removeEventListener('resize', debouncedSetSize);
   }, [setSize]);
 
-  /* ── rAF animation loop ── */
+  /* ── animation loop ── */
   useEffect(() => {
     let rafId;
     const animate = () => {
-      mouseRef.current.x += (cursorRef.current.x - mouseRef.current.x) / 15;
-      mouseRef.current.y += (cursorRef.current.y - mouseRef.current.y) / 15;
-
+      if (isInitialAnimation) {
+        const elapsed = Date.now() - initialStartTimeRef.current;
+        if (elapsed < animationDelay) {
+          rafId = requestAnimationFrame(animate);
+          return;
+        }
+        
+        const duration = 2000; // 2 seconds sweep
+        const progress = Math.min((elapsed - animationDelay) / duration, 1);
+        
+        if (titleRef.current) {
+          const titleRect = titleRef.current.getBoundingClientRect();
+          // Sweep from left to right, slightly outside to give a smooth entrance/exit
+          const sweepX = titleRect.left - 100 + (titleRect.width + 200) * progress;
+          const sweepY = titleRect.top + titleRect.height / 2;
+          
+          mouseRef.current.x = sweepX;
+          mouseRef.current.y = sweepY;
+        }
+        
+        if (progress >= 1) {
+          setIsInitialAnimation(false);
+        }
+      } else {
+        mouseRef.current.x += (cursorRef.current.x - mouseRef.current.x) / 15;
+        mouseRef.current.y += (cursorRef.current.y - mouseRef.current.y) / 15;
+      }
+      
       if (titleRef.current) {
         const titleRect = titleRef.current.getBoundingClientRect();
         const maxDist   = titleRect.width / 2;
 
         spansRef.current.forEach(span => {
           if (!span) return;
+          const rect       = span.getBoundingClientRect();
+          const charCenter = { x: rect.x + rect.width / 2, y: rect.y + rect.height / 2 };
+          const d          = dist(mouseRef.current, charCenter);
 
-          const rect = span.getBoundingClientRect();
-          const charCenter = {
-            x: rect.x + rect.width / 2,
-            y: rect.y + rect.height / 2,
-          };
+          const wdth    = width  ? Math.floor(getAttr(d, maxDist,   5, 200))          : 100;
+          const wght    = weight ? Math.floor(getAttr(d, maxDist, 300, 900))          : 400;
+          const italVal = italic ? getAttr(d, maxDist, 0, 1).toFixed(2)              :   0;
+          const alphaV  = alpha  ? getAttr(d, maxDist, 0, 1).toFixed(2)              :   1;
 
-          const d = dist(mouseRef.current, charCenter);
-
-          const wdth    = width  ? Math.floor(getAttr(d, maxDist, 5,   200)) : 100;
-          const wght    = weight ? Math.floor(getAttr(d, maxDist, 100, 900)) : 400;
-          const italVal = italic ? getAttr(d, maxDist, 0, 1).toFixed(2)      :   0;
-          const alphaVal = alpha ? getAttr(d, maxDist, 0, 1).toFixed(2)      :   1;
-
-          const newFVS = `'wght' ${wght}, 'wdth' ${wdth}, 'ital' ${italVal}`;
-
-          if (span.style.fontVariationSettings !== newFVS)
-            span.style.fontVariationSettings = newFVS;
-          if (alpha && span.style.opacity !== alphaVal)
-            span.style.opacity = alphaVal;
+          const fvs = `'wght' ${wght}, 'wdth' ${wdth}, 'ital' ${italVal}`;
+          if (span.style.fontVariationSettings !== fvs) span.style.fontVariationSettings = fvs;
+          if (alpha && span.style.opacity !== alphaV)   span.style.opacity = alphaV;
         });
       }
 
@@ -161,10 +181,10 @@ const TextPressure = ({
 
     animate();
     return () => cancelAnimationFrame(rafId);
-  }, [width, weight, italic, alpha]);
+  }, [width, weight, italic, alpha, isInitialAnimation]);
 
-  /* ── font-face + stroke style injection ── */
-  const styleElement = useMemo(() => (
+  /* ── font-face + stroke pseudo-element ── */
+  const styleEl = useMemo(() => (
     <style>{`
       @font-face {
         font-family: '${fontFamily}';
@@ -188,32 +208,28 @@ const TextPressure = ({
   ), [fontFamily, fontUrl, textColor, strokeColor, strokeWidth]);
 
   return (
-    /* The wrapper must be position:relative with an explicit height
-       (set on the parent in HeroSection via .hero-title-pressure).
-       overflow:visible lets variable-font glyphs breathe at the edges. */
     <div
       ref={containerRef}
       style={{ position: 'relative', width: '100%', height: '100%', overflow: 'visible' }}
     >
-      {styleElement}
-      <h2
+      {styleEl}
+      <h1
         ref={titleRef}
         className={`text-pressure-title ${className} ${stroke ? 'tp-stroke' : ''}`}
         style={{
           fontFamily,
-          fontSize:        fontSize,
+          fontSize,
           lineHeight,
-          display:         flex ? 'flex' : 'block',
-          justifyContent:  flex ? 'space-between' : undefined,
-          textTransform:   'uppercase',
-          transform:       `scale(1, ${scaleY})`,
+          transform: `scale(1, ${scaleY})`,
           transformOrigin: 'center top',
-          margin:          0,
-          fontWeight:      100,
-          color:           stroke ? undefined : textColor,
-          letterSpacing:   '-1px',
-          padding:         '0 2px',   /* tiny side padding prevents edge-glyph cropping */
-          boxSizing:       'border-box',
+          margin: 0,
+          fontWeight: 100,
+          color: stroke ? undefined : textColor,
+          display: flex ? 'flex' : 'block',
+          justifyContent: flex ? 'space-between' : undefined,
+          textTransform: 'uppercase',
+          textAlign: 'center',
+          padding: '0 4px', // Add small side padding to prevent letter cropping
         }}
       >
         {chars.map((char, i) => (
@@ -226,7 +242,7 @@ const TextPressure = ({
             {char === ' ' ? '\u00A0' : char}
           </span>
         ))}
-      </h2>
+      </h1>
     </div>
   );
 };

@@ -164,11 +164,6 @@ const TextPressure = ({
       <style>{`
         @import url('${fontUrl}');
 
-        .flex {
-          display: flex;
-          justify-content: space-between;
-        }
-
         .stroke span {
           position: relative;
           color: ${textColor};
@@ -219,7 +214,9 @@ const TextPressure = ({
           userSelect: 'none',
           whiteSpace: 'nowrap',
           fontWeight: 400,
-          width: '100%'
+          width: '100%',
+          display: flex ? 'flex' : 'block',
+          justifyContent: flex ? 'space-between' : undefined
         }}
       >
         {chars.map((char, i) => (

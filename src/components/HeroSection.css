@@ -26,17 +26,17 @@
   text-align: center;
 }
 
-/* TextPressure wrapper — max-width controls the font-size formula: containerW / (chars/2) */
+/* TextPressure wrapper — explicit height is required (TextPressure fills 100% height).
+   overflow is intentionally visible: hero-section clips any real overflow at section level. */
 .hero-title-pressure {
+  position: relative;
   width: 100%;
-  max-width: 480px;     /* 480 / 8.5 chars ≈ 56px font — matches the original screenshot */
+  max-width: 500px;
   margin: 0 auto 20px;
-  height: clamp(50px, 7vw, 80px);
-  overflow: hidden;
+  height: clamp(60px, 8vw, 90px);
   touch-action: pan-y;
 }
 
-/* Text pressure h2 overrides */
 .text-pressure-title {
   letter-spacing: -1px !important;
 }

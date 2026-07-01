@@ -25,8 +25,8 @@ const debounce = (func, delay) => {
 
 const TextPressure = ({
   text = 'Compressa',
-  fontFamily = 'Compressa VF',
-  fontUrl = 'https://res.cloudinary.com/dr6lvwubh/raw/upload/v1529908256/CompressaPRO-GX.woff2',
+  fontFamily = 'Roboto Flex',
+  fontUrl = 'https://fonts.googleapis.com/css2?family=Roboto+Flex:opsz,wdth,wght@8..144,25..151,100..1000&display=swap',
 
   width = true,
   weight = true,
@@ -47,8 +47,9 @@ const TextPressure = ({
   const titleRef = useRef(null);
   const spansRef = useRef([]);
 
-  const mouseRef = useRef({ x: 0, y: 0 });
-  const cursorRef = useRef({ x: 0, y: 0 });
+  const isHovered = useRef(false);
+  const mouseRef = useRef({ x: -9999, y: -9999 });
+  const cursorRef = useRef({ x: -9999, y: -9999 });
 
   const [fontSize, setFontSize] = useState(minFontSize);
   const [scaleY, setScaleY] = useState(1);
@@ -56,32 +57,50 @@ const TextPressure = ({
 
   const chars = text.split('');
 
-  useEffect(() => {
-    const handleMouseMove = e => {
+  const handleMouseEnter = useCallback(e => {
+    isHovered.current = true;
+    mouseRef.current.x = e.clientX;
+    mouseRef.current.y = e.clientY;
+    cursorRef.current.x = e.clientX;
+    cursorRef.current.y = e.clientY;
+  }, []);
+
+  const handleMouseMove = useCallback(e => {
+    if (isHovered.current) {
       cursorRef.current.x = e.clientX;
       cursorRef.current.y = e.clientY;
-    };
-    const handleTouchMove = e => {
+    }
+  }, []);
+
+  const handleMouseLeave = useCallback(() => {
+    isHovered.current = false;
+    cursorRef.current.x = -9999;
+    cursorRef.current.y = -9999;
+  }, []);
+
+  const handleTouchStart = useCallback(e => {
+    isHovered.current = true;
+    const t = e.touches[0];
+    if (t) {
+      mouseRef.current.x = t.clientX;
+      mouseRef.current.y = t.clientY;
+      cursorRef.current.x = t.clientX;
+      cursorRef.current.y = t.clientY;
+    }
+  }, []);
+
+  const handleTouchMove = useCallback(e => {
+    if (isHovered.current && e.touches[0]) {
       const t = e.touches[0];
       cursorRef.current.x = t.clientX;
       cursorRef.current.y = t.clientY;
-    };
-
-    window.addEventListener('mousemove', handleMouseMove);
-    window.addEventListener('touchmove', handleTouchMove, { passive: true });
-
-    if (containerRef.current) {
-      const { left, top, width, height } = containerRef.current.getBoundingClientRect();
-      mouseRef.current.x = left + width / 2;
-      mouseRef.current.y = top + height / 2;
-      cursorRef.current.x = mouseRef.current.x;
-      cursorRef.current.y = mouseRef.current.y;
     }
+  }, []);
 
-    return () => {
-      window.removeEventListener('mousemove', handleMouseMove);
-      window.removeEventListener('touchmove', handleTouchMove);
-    };
+  const handleTouchEnd = useCallback(() => {
+    isHovered.current = false;
+    cursorRef.current.x = -9999;
+    cursorRef.current.y = -9999;
   }, []);
 
   const setSize = useCallback(() => {
@@ -191,6 +210,12 @@ const TextPressure = ({
   return (
     <div
       ref={containerRef}
+      onMouseEnter={handleMouseEnter}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      onTouchStart={handleTouchStart}
+      onTouchMove={handleTouchMove}
+      onTouchEnd={handleTouchEnd}
       style={{
         position: 'relative',
         width: '100%',

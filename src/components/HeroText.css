@@ -15,8 +15,8 @@
 .hero-title-pressure {
   width: 100%;
   max-width: 540px;
-  margin: 0 auto 20px;
-  height: clamp(65px, 9vw, 95px);
+  margin: -10px auto 20px;
+  height: clamp(50px, 7vw, 75px);
   overflow: visible;
 }
 

@@ -137,7 +137,7 @@ const TextPressure = ({
           const d = dist(mouseRef.current, charCenter);
 
           const wdth = width ? Math.floor(getAttr(d, maxDist, 5, 200)) : 100;
-          const wght = weight ? Math.floor(getAttr(d, maxDist, 400, 900)) : 400;
+          const wght = weight ? Math.floor(getAttr(d, maxDist, 200, 800)) : 400;
           const italVal = italic ? getAttr(d, maxDist, 0, 1).toFixed(2) : 0;
           const alphaVal = alpha ? getAttr(d, maxDist, 0, 1).toFixed(2) : 1;
 
@@ -213,7 +213,7 @@ const TextPressure = ({
           textAlign: 'center',
           userSelect: 'none',
           whiteSpace: 'nowrap',
-          fontWeight: 400,
+          fontWeight: 200,
           width: '100%',
           display: flex ? 'flex' : 'block',
           justifyContent: flex ? 'space-between' : undefined

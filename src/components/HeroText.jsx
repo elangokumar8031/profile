@@ -1,5 +1,6 @@
 import { IconChevronUp, IconChevronDown } from './icons/Icons'
 import TextPressure from './TextPressure'
+import DownloadCVButton from './DownloadCVButton'
 import './HeroText.css'
 
 /**
@@ -39,10 +40,8 @@ function HeroText({
       </div>
       <p className="hero-desc">{description}</p>
 
-      {/* CTA */}
-      <button className="btn-cta" id="btn-get-in-touch" onClick={onCta}>
-        {ctaLabel}
-      </button>
+      {/* Download CV CTA */}
+      <DownloadCVButton />
     </div>
   )
 }

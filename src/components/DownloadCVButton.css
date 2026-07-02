@@ -1,0 +1,123 @@
+/* ============================================
+   DownloadCVButton.css
+   ============================================ */
+
+.download-cv-wrapper {
+  display: flex;
+  justify-content: center;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.download-cv-button {
+  position: relative;
+  width: 170px;
+  height: 44px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  border: 1px solid #000000;
+  background-color: #000000;
+  border-radius: 8px;
+  overflow: hidden;
+  font-family: inherit;
+  padding: 0;
+}
+
+.download-cv-button,
+.download-cv-button .button__icon,
+.download-cv-button .button__text {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.download-cv-button .button__text {
+  transform: translateX(20px);
+  color: #ffffff;
+  font-weight: 600;
+  font-size: 14px;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+}
+
+.download-cv-button .button__icon {
+  position: absolute;
+  left: 0;
+  top: 0;
+  transform: translateX(124px);
+  height: 100%;
+  width: 44px;
+  background-color: #1a1a1a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.download-cv-button .svg {
+  width: 20px;
+  fill: #ffffff;
+  transition: fill 0.3s ease;
+}
+
+.download-cv-button:hover {
+  background: #1a1a1a;
+}
+
+.download-cv-button:hover .button__text {
+  color: transparent;
+}
+
+.download-cv-button:hover .button__icon {
+  width: 168px;
+  transform: translateX(0);
+}
+
+.download-cv-button:active .button__icon {
+  background-color: #333333;
+}
+
+.download-cv-button:active {
+  border: 1px solid #333333;
+}
+
+/* ============================================
+   Dark Mode Styles (White Design Exactly)
+   ============================================ */
+
+.dark .download-cv-button {
+  border: 1px solid #ffffff;
+  background-color: #ffffff;
+}
+
+.dark .download-cv-button .button__text {
+  color: #000000;
+}
+
+.dark .download-cv-button .button__icon {
+  background-color: #f0f0f0;
+}
+
+.dark .download-cv-button .svg {
+  fill: #000000;
+}
+
+.dark .download-cv-button:hover {
+  background: #f0f0f0;
+}
+
+.dark .download-cv-button:hover .button__text {
+  color: transparent;
+}
+
+.dark .download-cv-button:hover .button__icon {
+  width: 168px;
+  transform: translateX(0);
+  background-color: #f0f0f0;
+}
+
+.dark .download-cv-button:active .button__icon {
+  background-color: #cccccc;
+}
+
+.dark .download-cv-button:active {
+  border: 1px solid #cccccc;
+}

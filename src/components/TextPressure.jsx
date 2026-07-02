@@ -41,7 +41,8 @@ const TextPressure = ({
   strokeColor = '#FF0000',
   className = '',
 
-  minFontSize = 24
+  minFontSize = 24,
+  animateOnMount = true
 }) => {
   const containerRef = useRef(null);
   const titleRef = useRef(null);
@@ -50,10 +51,12 @@ const TextPressure = ({
   const isHovered = useRef(false);
   const mouseRef = useRef({ x: -9999, y: -9999 });
   const cursorRef = useRef({ x: -9999, y: -9999 });
+  const hasAutoAnimated = useRef(false);
 
   const [fontSize, setFontSize] = useState(minFontSize);
   const [scaleY, setScaleY] = useState(1);
   const [lineHeight, setLineHeight] = useState(1);
+  const [isReady, setIsReady] = useState(false);
 
   const chars = text.split('');
 
@@ -106,6 +109,15 @@ const TextPressure = ({
   const setSize = useCallback(() => {
     if (!containerRef.current || !titleRef.current) return;
 
+    const isMobile = typeof window !== 'undefined' && window.innerWidth <= 768;
+    if (isMobile) {
+      setFontSize(minFontSize || 18);
+      setScaleY(1);
+      setLineHeight(1);
+      setIsReady(true);
+      return;
+    }
+
     const { width: containerW, height: containerH } = containerRef.current.getBoundingClientRect();
 
     let newFontSize = containerW / (chars.length / 2);
@@ -124,6 +136,7 @@ const TextPressure = ({
         setScaleY(yRatio);
         setLineHeight(yRatio);
       }
+      setIsReady(true);
     });
   }, [chars.length, minFontSize, scale]);
 
@@ -178,6 +191,67 @@ const TextPressure = ({
     return () => cancelAnimationFrame(rafId);
   }, [width, weight, italic, alpha]);
 
+  useEffect(() => {
+    if (!animateOnMount || hasAutoAnimated.current) return;
+
+    const isFirstVisit = typeof window !== 'undefined' && !sessionStorage.getItem('introPlayed');
+    const delay = isFirstVisit ? 2200 : 500;
+    const duration = 1800;
+
+    let startTime = null;
+    let rafId = null;
+
+    const timeoutId = setTimeout(() => {
+      if (isHovered.current || !titleRef.current || hasAutoAnimated.current) return;
+      hasAutoAnimated.current = true;
+
+      const titleRect = titleRef.current.getBoundingClientRect();
+      if (titleRect.width === 0) return;
+
+      const maxDist = titleRect.width / 2;
+      const startX = titleRect.left - maxDist * 2.2;
+      const centerY = titleRect.top + titleRect.height / 2;
+
+      cursorRef.current.x = startX;
+      cursorRef.current.y = centerY;
+      mouseRef.current.x = startX;
+      mouseRef.current.y = centerY;
+
+      const step = (timestamp) => {
+        if (isHovered.current || !titleRef.current) {
+          return;
+        }
+        if (!startTime) startTime = timestamp;
+        const elapsed = timestamp - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+
+        const currentRect = titleRef.current.getBoundingClientRect();
+        const currentMaxDist = currentRect.width / 2;
+        const currentStartX = currentRect.left - currentMaxDist * 2.2;
+        const currentEndX = currentRect.right + currentMaxDist * 2.2;
+        const currentCenterY = currentRect.top + currentRect.height / 2;
+
+        if (progress < 1) {
+          cursorRef.current.x = currentStartX + (currentEndX - currentStartX) * progress;
+          cursorRef.current.y = currentCenterY;
+          rafId = requestAnimationFrame(step);
+        } else {
+          cursorRef.current.x = -9999;
+          cursorRef.current.y = -9999;
+          mouseRef.current.x = -9999;
+          mouseRef.current.y = -9999;
+        }
+      };
+
+      rafId = requestAnimationFrame(step);
+    }, delay);
+
+    return () => {
+      clearTimeout(timeoutId);
+      if (rafId) cancelAnimationFrame(rafId);
+    };
+  }, [animateOnMount]);
+
   const styleElement = useMemo(() => {
     return (
       <style>{`
@@ -220,7 +294,9 @@ const TextPressure = ({
         position: 'relative',
         width: '100%',
         height: '100%',
-        background: 'transparent'
+        background: 'transparent',
+        opacity: isReady ? 1 : 0,
+        transition: 'opacity 0.25s ease'
       }}
     >
       {styleElement}

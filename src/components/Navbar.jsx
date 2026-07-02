@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useScroll } from 'framer-motion'
-import { PanelLeft } from 'lucide-react'
+import { PanelLeft, X } from 'lucide-react'
 import GooeyNav from './GooeyNav'
 import { AnimatedThemeToggler } from './AnimatedThemeToggler'
 import './Navbar.css'
@@ -57,7 +57,7 @@ function Navbar({ name = 'Your Name', subtitle = 'Portfolio', initial = 'Y', ope
         onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
         aria-label="Toggle menu"
       >
-        <PanelLeft size={20} />
+        {mobileMenuOpen ? <X size={20} /> : <PanelLeft size={20} />}
       </button>
 
       {/* Mobile Dropdown */}

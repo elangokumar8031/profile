@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import SidebarLeft  from './SidebarLeft'
-import HeroText     from './HeroText'
+import SidebarLeft from './SidebarLeft'
+import HeroText from './HeroText'
 import { Particles } from './Particles'
 import './HeroSection.css'
 
@@ -75,16 +75,16 @@ function HeroSection({ name, description, socials, onCta }) {
             }}
             initial={{ y: '0%' }}
             animate={{ y: '-100%' }}
-            transition={{ 
-              duration: 0.9, 
+            transition={{
+              duration: 0.9,
               ease: [0.85, 0, 0.15, 1], // Premium cubic-bezier curtain reveal
-              delay: 1.3 
+              delay: 1.3
             }}
             onAnimationComplete={handleIntroComplete}
           >
             <motion.div
               initial={{ opacity: 0, scale: 0.8, y: 30, filter: 'blur(8px)' }}
-              animate={{ 
+              animate={{
                 opacity: [0, 1, 1, 0],
                 scale: [0.8, 1, 1, 1.15],
                 y: [30, 0, 0, -35],
@@ -121,7 +121,7 @@ function HeroSection({ name, description, socials, onCta }) {
         </div>
         <HeroText description={description} onCta={onCta} />
       </main>
-      
+
       {/* SidebarRight removed to become a global component */}
     </section>
   )

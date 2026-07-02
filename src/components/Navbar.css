@@ -303,11 +303,11 @@
     display: flex;
   }
 
-  /* Icon rotation animation when open */
+  /* Icon transition when open */
   .mobile-menu-toggle svg {
-    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.2s ease;
   }
   .mobile-menu-toggle.open svg {
-    transform: rotate(180deg);
+    transform: scale(1.1);
   }
 }

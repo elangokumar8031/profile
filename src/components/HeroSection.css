@@ -27,6 +27,7 @@
 }
 
 .hero-name-display {
+  display: inline-block;
   font-family: 'Outfit', sans-serif;
   font-size: clamp(28px, 8vw, 80px);
   font-weight: 900;
@@ -39,20 +40,20 @@
   /* Glare gradient setup */
   background: linear-gradient(
     110deg, 
-    var(--text-primary) 40%, 
-    #888 50%, 
-    var(--text-primary) 60%
+    var(--text-primary) 35%, 
+    #ffffff 50%, 
+    var(--text-primary) 65%
   );
-  background-size: 200% auto;
+  background-size: 300% 100%;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
   
-  /* Initial position (off-screen right) */
-  background-position: 200% center;
+  /* Initial position (off-screen left of E) */
+  background-position: 100% center;
   
-  /* Animation: 6.5s total cycle (5s wait + 1.5s sweep), infinite */
-  animation: text-glare 6.5s ease-in-out infinite;
+  /* Animation: 6s total cycle (wait + sweep), infinite */
+  animation: text-glare 6s ease-in-out infinite;
   
   margin: 0;
   padding: 10px 0;
@@ -61,11 +62,11 @@
 
 
 @keyframes text-glare {
-  0%, 77% {
-    background-position: 200% center;
+  0%, 75% {
+    background-position: 100% center;
   }
   100% {
-    background-position: -200% center;
+    background-position: 0% center;
   }
 }
 
